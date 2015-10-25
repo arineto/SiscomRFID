@@ -26,7 +26,7 @@ public class DFSA {
 		}
 	}
 
-	public void run() throws InterruptedException{
+	public void run(){
 		
 		int[] frame;
 		int slotsNum;
@@ -43,7 +43,7 @@ public class DFSA {
 			slotsNum = estimator.estimate(lastFrameSuccessSlots, lastFrameCollisionSlots);
 			frame = new int[slotsNum];
 			
-			System.out.println("Iniciando fram com "+slotsNum+" slots");
+//			System.out.println("Iniciando fram com "+slotsNum+" slots");
 			
 			for(int i=0; i<this.tags.length; i++){
 				frame = tags[i].alive(frame);
@@ -62,7 +62,7 @@ public class DFSA {
 					// A tag was identified
 					successSlots += 1;
 					this.muteTag(frame[i]);
-					System.out.println("Tag com ID="+frame[i]+" identificada");
+//					System.out.println("Tag com ID="+frame[i]+" identificada");
 				}
 			}
 			
@@ -76,8 +76,8 @@ public class DFSA {
 				this.finish();
 			}
 			
-			System.out.println("Frame finalizado");
-			System.out.println("========================================================================================");
+//			System.out.println("Frame finalizado");
+//			System.out.println("========================================================================================");
 
 		}
 		
