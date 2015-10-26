@@ -11,7 +11,7 @@ public class EomLee implements Estimator{
 	public int estimate(int lastFrameSize, int successSlots, int collisionSlots){
 		
 		if(lastFrameSize == 0){
-			return 50;
+			return 1;
 		}
 		
 		beta = (double) lastFrameSize / ( (gama * collisionSlots) + successSlots );
