@@ -2,6 +2,6 @@ package dfsa;
 
 public interface Estimator {
 	
-	int estimate(int successSlots, int colisionSlots);
+	int estimate(int lasFrameSize, int successSlots, int colisionSlots);
 
 }
