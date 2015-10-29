@@ -19,7 +19,11 @@ def main():
 
             file_name = '%s/%d' % (directory, i)
             f = open(file_name, 'w')
+
             tag_id = generate_id()
+            while(len(tag_id) != 96):
+                tag_id = generate_id()
+
             f.write(tag_id)
             f.close()
 
