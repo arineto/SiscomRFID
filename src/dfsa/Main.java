@@ -21,11 +21,13 @@ public class Main {
 		long time;
 		int frames;
 		int slots;
+		int tags;
 		
 		int [][] collisionChartData = new int [10][2];
 		int [][] emptyChartData = new int [10][2];
 		int [][] slotsChartData = new int [10][2];
 		float [][] timeChartData = new float [10][2];
+		int [][] estimationErrorTagsChartData = new int [10][2];
 		
 		int tagsNum;
 		
@@ -41,6 +43,7 @@ public class Main {
 				time = 0;
 				frames = 0;
 				slots = 0;
+				tags = 0;
 				
 				tagsNum = 100*tagsM[i];
 				
@@ -56,12 +59,14 @@ public class Main {
 					empty += algorithm.getTotalEmptySlots();
 					time += algorithm.getTotalTime();
 					slots += algorithm.getTotalSlots();
+					tags += algorithm.getEstimationError();
 				}
 				
 				collisionChartData[i][0] = collision/500;
 				emptyChartData[i][0] = empty/500;
 				slotsChartData[i][0] = slots/500;
 				timeChartData[i][0] = (float)time/500;
+				estimationErrorTagsChartData[i][0] = tags/500;
 				
 				writer.println(tagsNum+","+frames/500+","+collision/500+","+empty/500+","+(float) time/500+","+slots/500);
 	//			System.out.println("Resultados para "+tagsNum+" tags:");
@@ -78,7 +83,7 @@ public class Main {
 			/////////////////////////////////////////////////////////////////////////////////////////////
 			
 			writer = new PrintWriter("LowerBound.csv", "UTF-8");
-			writer.println("Tags,Frames,Colis√µes,Vazios,Tempo");
+			writer.println("Tags,Frames,Colisıes,Vazios,Tempo");
 		
 			for(int i=0; i<tagsM.length; i++){
 				
@@ -87,6 +92,7 @@ public class Main {
 				time = 0;
 				frames = 0;
 				slots = 0;
+				tags = 0;
 				
 				tagsNum = 100*tagsM[i];
 				
@@ -102,12 +108,14 @@ public class Main {
 					empty += algorithm.getTotalEmptySlots();
 					time += algorithm.getTotalTime();
 					slots += algorithm.getTotalSlots();
+					tags += algorithm.getEstimationError();
 				}
 				
 				collisionChartData[i][1] = collision/500;
 				emptyChartData[i][1] = empty/500;
 				slotsChartData[i][1] = slots/500;
 				timeChartData[i][1] = (float)time/500;
+				estimationErrorTagsChartData[i][1] = tags/500;
 				
 				writer.println(tagsNum+","+frames/500+","+collision/500+","+empty/500+","+(float) time/500);
 	//			System.out.println("Resultados para "+tagsNum+" tags:");
@@ -127,8 +135,10 @@ public class Main {
 			chartEmpty.create();
 			LineChart chartTotalSlots = new LineChart(new Chart("Total de slots", "N˙mero de etiquetas", "N˙mero de slots", slotsChartData));
 			chartTotalSlots.create();
-			LineChart chartTime = new LineChart(new Chart("Tempo para identficaÁ„o", "N˙mero de etiquetas", "Tempo para identificaÁ„o", timeChartData));
+			LineChart chartTime = new LineChart(new Chart("Tempo para identficaÁ„o", "N˙mero de etiquetas", "Tempo para identificaÁ„o (ms)", timeChartData));
 			chartTime.create();
+			LineChart chartError = new LineChart(new Chart("Erro abs. mÈdio de estimaÁ„o", "N˙mero de etiquetas", "Erro abs. mÈdio de estimaÁ„o", estimationErrorTagsChartData));
+			chartError.create();
 		
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

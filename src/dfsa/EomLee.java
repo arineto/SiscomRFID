@@ -24,4 +24,12 @@ public class EomLee implements Estimator{
 		return (int) gama * collisionSlots;
 	}
 	
+	public int estimateTags(int lastFrameSize, int successSlots, int collisionSlots){
+		
+		if(lastFrameSize == 1){
+			return 1;
+		}
+		
+		return (int) (lastFrameSize / beta);
+	}
 }

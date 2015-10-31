@@ -10,6 +10,7 @@ public class DFSA {
 	private long totalTime;
 	private int totalFrames;
 	private int totalSlots;
+	private int estimationError;
 	private Tag tags[];
 	
 	public DFSA(Estimator estimator, int tagNumber){
@@ -22,6 +23,7 @@ public class DFSA {
 		this.totalTime = 0;
 		this.totalFrames = 0;
 		this.totalSlots = 0;
+		this.estimationError = 0;
 		
 		Tag tag;
 		for(int i=0; i<this.tagNumber; i++){
@@ -34,6 +36,7 @@ public class DFSA {
 		
 		int[] frame;
 		int slotsNum = 0;
+		int tagsNum = 0;
 		int lastFrameCollisionSlots = 0;
 		int lastFrameSuccessSlots = 0;
 		
@@ -45,6 +48,8 @@ public class DFSA {
 			int successSlots = 0;
 			
 			slotsNum = estimator.estimate(slotsNum, lastFrameSuccessSlots, lastFrameCollisionSlots);
+			tagsNum = estimator.estimateTags(slotsNum, lastFrameSuccessSlots, lastFrameCollisionSlots);
+			
 			frame = new int[slotsNum];
 			
 //			System.out.println("Iniciando fram com "+slotsNum+" slots");
@@ -77,6 +82,7 @@ public class DFSA {
 			this.updateEmptySlots(emptySlots);
 			this.updateTotalFrames();
 			this.updateTotalSlots(slotsNum);
+			this.updateEstimationError(Math.abs(tagNumber-tagsNum));
 			
 			if( (collisionSlots == 0) && (successSlots == 0) ){
 				this.finish();
@@ -148,5 +154,13 @@ public class DFSA {
 	
 	public int getTotalSlots(){
 		return this.totalSlots;
+	}
+	
+	public void updateEstimationError(int error){
+		this.estimationError += error;
+	}
+	
+	public int getEstimationError(){
+		return this.estimationError;
 	}
 }
