@@ -9,6 +9,7 @@ public class DFSA {
 	private int totalEmptySlots;
 	private long totalTime;
 	private int totalFrames;
+	private int totalSlots;
 	private Tag tags[];
 	
 	public DFSA(Estimator estimator, int tagNumber){
@@ -20,6 +21,7 @@ public class DFSA {
 		this.totalEmptySlots = 0;
 		this.totalTime = 0;
 		this.totalFrames = 0;
+		this.totalSlots = 0;
 		
 		Tag tag;
 		for(int i=0; i<this.tagNumber; i++){
@@ -74,6 +76,7 @@ public class DFSA {
 			this.updateCollisionSlots(collisionSlots);
 			this.updateEmptySlots(emptySlots);
 			this.updateTotalFrames();
+			this.updateTotalSlots(slotsNum);
 			
 			if( (collisionSlots == 0) && (successSlots == 0) ){
 				this.finish();
@@ -139,4 +142,11 @@ public class DFSA {
 		return this.totalFrames;
 	}
 	
+	public void updateTotalSlots(int slots){
+		this.totalSlots += slots;
+	}
+	
+	public int getTotalSlots(){
+		return this.totalSlots;
+	}
 }

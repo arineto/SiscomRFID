@@ -20,15 +20,19 @@ public class Main {
 		int empty;
 		long time;
 		int frames;
+		int slots;
 		
-		int [][] collisionChartData = new int [10][10];
+		int [][] collisionChartData = new int [10][2];
+		int [][] emptyChartData = new int [10][2];
+		int [][] slotsChartData = new int [10][2];
+		float [][] timeChartData = new float [10][2];
 		
 		int tagsNum;
 		
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter("EomLee.csv", "UTF-8");
-			writer.println("Tags,Frames,Colis√µes,Vazios,Tempo");
+			writer.println("Tags,Frames,Colisıes,Vazios,Tempo,Slots");
 		
 			for(int i=0; i<tagsM.length; i++){
 				
@@ -36,6 +40,7 @@ public class Main {
 				empty = 0;
 				time = 0;
 				frames = 0;
+				slots = 0;
 				
 				tagsNum = 100*tagsM[i];
 				
@@ -50,11 +55,15 @@ public class Main {
 					collision += algorithm.getTotalCollisionSlots();
 					empty += algorithm.getTotalEmptySlots();
 					time += algorithm.getTotalTime();
+					slots += algorithm.getTotalSlots();
 				}
 				
 				collisionChartData[i][0] = collision/500;
+				emptyChartData[i][0] = empty/500;
+				slotsChartData[i][0] = slots/500;
+				timeChartData[i][0] = (float)time/500;
 				
-				writer.println(tagsNum+","+frames/500+","+collision/500+","+empty/500+","+(float) time/500);
+				writer.println(tagsNum+","+frames/500+","+collision/500+","+empty/500+","+(float) time/500+","+slots/500);
 	//			System.out.println("Resultados para "+tagsNum+" tags:");
 	//			System.out.println("Total de frames usados: "+ frames/500);
 	//			System.out.println("Total de slots com colis√£o: " + collision/500);
@@ -77,6 +86,7 @@ public class Main {
 				empty = 0;
 				time = 0;
 				frames = 0;
+				slots = 0;
 				
 				tagsNum = 100*tagsM[i];
 				
@@ -91,9 +101,13 @@ public class Main {
 					collision += algorithm.getTotalCollisionSlots();
 					empty += algorithm.getTotalEmptySlots();
 					time += algorithm.getTotalTime();
+					slots += algorithm.getTotalSlots();
 				}
 				
 				collisionChartData[i][1] = collision/500;
+				emptyChartData[i][1] = empty/500;
+				slotsChartData[i][1] = slots/500;
+				timeChartData[i][1] = (float)time/500;
 				
 				writer.println(tagsNum+","+frames/500+","+collision/500+","+empty/500+","+(float) time/500);
 	//			System.out.println("Resultados para "+tagsNum+" tags:");
@@ -107,8 +121,14 @@ public class Main {
 			
 			writer.close();
 			
-			LineChart chartLower = new LineChart(new Chart("Slots Vazios", "N˙mero de etiquetas", "N˙mero de colisıes", collisionChartData));
-			chartLower.create();
+			LineChart chartCollision = new LineChart(new Chart("Slots com colis„o", "N˙mero de etiquetas", "N˙mero de colisıes", collisionChartData));
+			chartCollision.create();
+			LineChart chartEmpty = new LineChart(new Chart("Slots vazios", "N˙mero de etiquetas", "N˙mero de slots vazios", emptyChartData));
+			chartEmpty.create();
+			LineChart chartTotalSlots = new LineChart(new Chart("Total de slots", "N˙mero de etiquetas", "N˙mero de slots", slotsChartData));
+			chartTotalSlots.create();
+			LineChart chartTime = new LineChart(new Chart("Tempo para identficaÁ„o", "N˙mero de etiquetas", "Tempo para identificaÁ„o", timeChartData));
+			chartTime.create();
 		
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

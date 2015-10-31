@@ -3,18 +3,25 @@ package charts;
 public class Chart {
 	
 	private String title;
-	private String Estimator;
 	private String axisX;
 	private String axisY;
 	private int [][] data;
+	private float[][] timeData;
 	
 	public Chart(String title, String axisX, String axisY, int[][] data) {
 		
 		this.title = title;
-		this.Estimator = Estimator;
 		this.axisX = axisX;
 		this.axisY = axisY;
 		this.data = data;
+	}
+	
+	public Chart(String title, String axisX, String axisY, float[][] data) {
+		
+		this.title = title;
+		this.axisX = axisX;
+		this.axisY = axisY;
+		this.timeData = data;
 	}
 
 	public String getTitle() {
@@ -25,12 +32,12 @@ public class Chart {
 		this.title = title;
 	}
 
-	public String getEstimator() {
-		return Estimator;
+	public float[][] getTimeData() {
+		return timeData;
 	}
 
-	public void setEstimator(String Estimator) {
-		this.Estimator = Estimator;
+	public void setTimeData(float[][] timeData) {
+		this.timeData = timeData;
 	}
 
 	public String getAxisX() {

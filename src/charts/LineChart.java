@@ -32,8 +32,18 @@ public class LineChart {
 		xyPlot.setDomainCrosshairVisible(true);
 		xyPlot.setRangeCrosshairVisible(true);
 		
-        NumberAxis domain = (NumberAxis) xyPlot.getDomainAxis();
-        domain.setTickUnit(new NumberTickUnit(100));
+		if(chart.getTitle() == "Tempo para identficação"){
+			
+			//Calculando o intervalo entre os valores do eixo Y
+	        NumberAxis domain = (NumberAxis) xyPlot.getDomainAxis();
+	        domain.setTickUnit(new NumberTickUnit((float)chart.getTimeData()[9][1]/10));
+		} else {
+			
+			//Calculando o intervalo entre os valores do eixo Y
+	        NumberAxis domain = (NumberAxis) xyPlot.getDomainAxis();
+	        domain.setTickUnit(new NumberTickUnit((float)chart.getData()[9][1]/10));
+		}
+
         
         NumberAxis yAxis = (NumberAxis) xyPlot.getRangeAxis();
         yAxis.setAutoRangeIncludesZero(false);
@@ -50,14 +60,30 @@ public class LineChart {
 		XYSeries serie2 = new XYSeries("Lower Bound");
 		
 		int n = 100;
-		for(int i = 0; i<chart.getData().length; i++){
-			serie1.add(chart.getData()[i][0], n);
-			serie2.add(chart.getData()[i][1], n);
-			n += 100;
-		}
 		
-		collection.addSeries(serie1);
-		collection.addSeries(serie2);
+		if(chart.getTitle() == "Tempo para identficação"){
+			
+			for(int i = 0; i<chart.getTimeData().length; i++){
+				serie1.add(chart.getTimeData()[i][0], n);
+				serie2.add(chart.getTimeData()[i][1], n);
+				n += 100;
+			}
+			
+			collection.addSeries(serie1);
+			collection.addSeries(serie2);
+		} else {
+			
+			for(int i = 0; i<chart.getData().length; i++){
+				serie1.add(chart.getData()[i][0], n);
+				serie2.add(chart.getData()[i][1], n);
+				n += 100;
+			}
+			
+			collection.addSeries(serie1);
+			collection.addSeries(serie2);	
+		}
+
+
 		
 		return collection;
 	}
