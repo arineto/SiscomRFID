@@ -31,19 +31,6 @@ public class LineChart {
 		XYPlot xyPlot = (XYPlot) jChart.getPlot();
 		xyPlot.setDomainCrosshairVisible(true);
 		xyPlot.setRangeCrosshairVisible(true);
-		
-		if(chart.getTitle() == "Tempo para identficação"){
-			
-			//Calculando o intervalo entre os valores do eixo Y
-	        NumberAxis domain = (NumberAxis) xyPlot.getDomainAxis();
-	        domain.setTickUnit(new NumberTickUnit((float)chart.getTimeData()[9][1]/10));
-		} else {
-			
-			//Calculando o intervalo entre os valores do eixo Y
-	        NumberAxis domain = (NumberAxis) xyPlot.getDomainAxis();
-	        domain.setTickUnit(new NumberTickUnit(100));
-		}
-
         
         NumberAxis yAxis = (NumberAxis) xyPlot.getRangeAxis();
         yAxis.setAutoRangeIncludesZero(false);

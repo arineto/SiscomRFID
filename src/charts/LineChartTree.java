@@ -32,10 +32,6 @@ public class LineChartTree {
 		xyPlot.setDomainCrosshairVisible(true);
 		xyPlot.setRangeCrosshairVisible(true);
 
-		//Calculando o intervalo entre os valores do eixo Y
-		NumberAxis domain = (NumberAxis) xyPlot.getDomainAxis();
-		domain.setTickUnit(new NumberTickUnit((int)chart.getData()[9][0]/10));
-
 		NumberAxis yAxis = (NumberAxis) xyPlot.getRangeAxis();
 		yAxis.setAutoRangeIncludesZero(false);
 
