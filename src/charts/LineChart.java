@@ -41,7 +41,7 @@ public class LineChart {
 			
 			//Calculando o intervalo entre os valores do eixo Y
 	        NumberAxis domain = (NumberAxis) xyPlot.getDomainAxis();
-	        domain.setTickUnit(new NumberTickUnit((float)chart.getData()[9][1]/10));
+	        domain.setTickUnit(new NumberTickUnit(100));
 		}
 
         
@@ -82,8 +82,6 @@ public class LineChart {
 			collection.addSeries(serie1);
 			collection.addSeries(serie2);	
 		}
-
-
 		
 		return collection;
 	}
