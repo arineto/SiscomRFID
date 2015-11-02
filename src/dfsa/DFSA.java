@@ -99,9 +99,10 @@ public class DFSA {
 		
 	}
 	
+	//Adicionado && !this.tags[i].isMuted() so para se tiver tags com a mesma ID ele procurar a que nao foi silenciada
 	public void muteTag(int tagID){
 		for(int i=0; i<tags.length; i++){
-			if(this.tags[i].getID() == tagID){
+			if(this.tags[i].getID() == tagID && !this.tags[i].isMuted()){
 				this.tags[i].mute();
 				break;
 			}
