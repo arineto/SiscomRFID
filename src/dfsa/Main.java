@@ -47,7 +47,7 @@ public class Main {
 				
 				tagsNum = 100*tagsM[i];
 				
-				for(int j=1; j<501; j++){
+				for(int j=1; j<1001; j++){
 					//estimator = new LowerBound();
 					estimator = new EomLee();
 					
@@ -62,18 +62,18 @@ public class Main {
 					tags += algorithm.getEstimationError();
 				}
 				
-				collisionChartData[i][0] = collision/500;
-				emptyChartData[i][0] = empty/500;
-				slotsChartData[i][0] = slots/500;
-				timeChartData[i][0] = (float)time/500;
-				estimationErrorTagsChartData[i][0] = tags/500;
+				collisionChartData[i][0] = collision/1000;
+				emptyChartData[i][0] = empty/1000;
+				slotsChartData[i][0] = slots/1000;
+				timeChartData[i][0] = (float)time/1000;
+				estimationErrorTagsChartData[i][0] = tags/1000;
 				
-				writer.println(tagsNum+","+frames/500+","+collision/500+","+empty/500+","+(float) time/500+","+slots/500);
+				writer.println(tagsNum+","+frames/1000+","+collision/1000+","+empty/1000+","+(float) time/1000+","+slots/1000);
 	//			System.out.println("Resultados para "+tagsNum+" tags:");
-	//			System.out.println("Total de frames usados: "+ frames/500);
-	//			System.out.println("Total de slots com colisão: " + collision/500);
-	//			System.out.println("Total de slots vazios: " + empty/500);
-	//			System.out.println("Tempo total gasto para a execução: " + (float) time/500 + " milisegundos");
+	//			System.out.println("Total de frames usados: "+ frames/1000);
+	//			System.out.println("Total de slots com colisão: " + collision/1000);
+	//			System.out.println("Total de slots vazios: " + empty/1000);
+	//			System.out.println("Tempo total gasto para a execução: " + (float) time/1000 + " milisegundos");
 	//			System.out.println("============================================================================");
 				
 			}
@@ -96,7 +96,7 @@ public class Main {
 				
 				tagsNum = 100*tagsM[i];
 				
-				for(int j=1; j<501; j++){
+				for(int j=1; j<1001; j++){
 					estimator = new LowerBound();
 					//estimator = new EomLee();
 					
@@ -111,18 +111,18 @@ public class Main {
 					tags += algorithm.getEstimationError();
 				}
 				
-				collisionChartData[i][1] = collision/500;
-				emptyChartData[i][1] = empty/500;
-				slotsChartData[i][1] = slots/500;
-				timeChartData[i][1] = (float)time/500;
-				estimationErrorTagsChartData[i][1] = tags/500;
+				collisionChartData[i][1] = collision/1000;
+				emptyChartData[i][1] = empty/1000;
+				slotsChartData[i][1] = slots/1000;
+				timeChartData[i][1] = (float)time/1000;
+				estimationErrorTagsChartData[i][1] = tags/1000;
 				
-				writer.println(tagsNum+","+frames/500+","+collision/500+","+empty/500+","+(float) time/500);
+				writer.println(tagsNum+","+frames/1000+","+collision/1000+","+empty/1000+","+(float) time/1000);
 	//			System.out.println("Resultados para "+tagsNum+" tags:");
-	//			System.out.println("Total de frames usados: "+ frames/500);
-	//			System.out.println("Total de slots com colisão: " + collision/500);
-	//			System.out.println("Total de slots vazios: " + empty/500);
-	//			System.out.println("Tempo total gasto para a execução: " + (float) time/500 + " milisegundos");
+	//			System.out.println("Total de frames usados: "+ frames/1000);
+	//			System.out.println("Total de slots com colisão: " + collision/1000);
+	//			System.out.println("Total de slots vazios: " + empty/1000);
+	//			System.out.println("Tempo total gasto para a execução: " + (float) time/1000 + " milisegundos");
 	//			System.out.println("============================================================================");
 				
 			}
