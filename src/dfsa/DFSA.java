@@ -82,7 +82,7 @@ public class DFSA {
 			this.updateEmptySlots(emptySlots);
 			this.updateTotalFrames();
 			this.updateTotalSlots(slotsNum);
-			this.updateEstimationError(Math.abs(tagNumber-tagsNum));
+			this.updateEstimationError(Math.abs((tagNumber-countMuted())-tagsNum));
 			
 			if( (collisionSlots == 0) && (successSlots == 0) ){
 				this.finish();
@@ -107,6 +107,17 @@ public class DFSA {
 				break;
 			}
 		}
+	}
+	
+	public int countMuted(){
+		
+		int muted = 0;
+		for(int i=0; i<tags.length; i++){
+			if(this.tags[i].isMuted()){
+				muted++;
+			}
+		}
+		return muted;
 	}
 	
 	private boolean isFinished(){
