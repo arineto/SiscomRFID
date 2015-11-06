@@ -98,7 +98,7 @@ public class Main {
 		}
 	}
 	
-	public static void printCSV(String csvFileName) {
+	public static void printCSV(String csvFileName, int chartType) {
 		try {
 			writer = new PrintWriter(csvFileName, "UTF-8");
 			writer.println("Tags,Frames,Colisões,Vazios,Tempo,Slots");
@@ -114,8 +114,11 @@ public class Main {
 				tagsNum = 100*tagsM[i];
 				
 				for(int j=1; j<1001; j++){
-					//estimator = new LowerBound();
-					estimator = new EomLee();
+					if(chartType == 0) {
+						estimator = new EomLee();
+					} else {
+						estimator = new LowerBound();
+					}
 					
 					algorithm = new DFSA(estimator, tagsNum);
 					algorithm.run();
@@ -128,19 +131,19 @@ public class Main {
 					tags += algorithm.getEstimationError();
 				}
 				
-				collisionChartData[i][0] = collision/1000;
-				emptyChartData[i][0] = empty/1000;
-				slotsChartData[i][0] = slots/1000;
-				timeChartData[i][0] = (float)time/1000;
-				estimationErrorTagsChartData[i][0] = tags/1000;
+				collisionChartData[i][chartType] = collision/1000;
+				emptyChartData[i][chartType] = empty/1000;
+				slotsChartData[i][chartType] = slots/1000;
+				timeChartData[i][chartType] = (float)time/1000;
+				estimationErrorTagsChartData[i][chartType] = tags/1000;
 				
 				writer.println(tagsNum+","+frames/1000+","+collision/1000+","+empty/1000+","+(float) time/1000+","+slots/1000);
-	//			System.out.println("Resultados para "+tagsNum+" tags:");
-	//			System.out.println("Total de frames usados: "+ frames/1000);
-	//			System.out.println("Total de slots com colisao: " + collision/1000);
-	//			System.out.println("Total de slots vazios: " + empty/1000);
-	//			System.out.println("Tempo total gasto para a execucao: " + (float) time/1000 + " milisegundos");
-	//			System.out.println("============================================================================");				
+//				System.out.println("Resultados para "+tagsNum+" tags:");
+//				System.out.println("Total de frames usados: "+ frames/1000);
+//				System.out.println("Total de slots com colisao: " + collision/1000);
+//				System.out.println("Total de slots vazios: " + empty/1000);
+//				System.out.println("Tempo total gasto para a execucao: " + (float) time/1000 + " milisegundos");
+//				System.out.println("============================================================================");				
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -153,8 +156,8 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException{
 		// Criar .CSVs:
-		printCSV("EomLee.csv");
-		printCSV("LowerBound.csv");
+		printCSV("EomLee.csv", 0);
+		printCSV("LowerBound.csv", 1);
 		
 		// Gerar gráficos:
 		String slotsColisaoFile = "slots-colisao";
