@@ -24,9 +24,11 @@ public class LineChart {
 		this.chart = chart;
 	}
 	
-	public void create () throws IOException{
+	public void create (String path) throws IOException{
 	
-		JFreeChart jChart = ChartFactory.createXYLineChart("", chart.getAxisY(), chart.getAxisX(), createDataset(), PlotOrientation.HORIZONTAL, true, false, false);
+		JFreeChart jChart = ChartFactory.createXYLineChart(
+				"", chart.getAxisY(), chart.getAxisX(), 
+				createDataset(), PlotOrientation.HORIZONTAL, true, false, false);
 		
 		XYPlot xyPlot = (XYPlot) jChart.getPlot();
 		xyPlot.setDomainCrosshairVisible(true);
@@ -35,7 +37,8 @@ public class LineChart {
         NumberAxis yAxis = (NumberAxis) xyPlot.getRangeAxis();
         yAxis.setAutoRangeIncludesZero(false);
 		
-		OutputStream image = new FileOutputStream(chart.getTitle() + ".png");
+//		OutputStream image = new FileOutputStream(chart.getTitle() + ".png");
+        OutputStream image = new FileOutputStream(path);
 		ChartUtilities.writeChartAsPNG(image, jChart, 500, 500);
 		image.close();
 	}
@@ -48,7 +51,7 @@ public class LineChart {
 		
 		int n = 100;
 		
-		if(chart.getTitle() == "Tempo para identficação"){
+		if(chart.getTitle().equals("tempo-identificacao")){
 			
 			for(int i = 0; i<chart.getTimeData().length; i++){
 				serie1.add(chart.getTimeData()[i][0], n);
