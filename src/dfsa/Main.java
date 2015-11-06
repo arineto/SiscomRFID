@@ -1,12 +1,9 @@
 package dfsa;
 
-import java.awt.Desktop;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import charts.Chart;
 import charts.LineChart;
