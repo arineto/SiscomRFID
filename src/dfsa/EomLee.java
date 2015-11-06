@@ -15,7 +15,7 @@ public class EomLee implements Estimator{
 	public int estimate(int lastFrameSize, int successSlots, int collisionSlots){
 		
 		if(lastFrameSize == 0){
-			return 64;
+			return 1;
 		}else{
 			do{
 
