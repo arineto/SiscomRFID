@@ -10,6 +10,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYDataset;
@@ -25,7 +26,7 @@ public class LineChart {
 		this.chart = chart;
 	}
 	
-	public void create (String path) throws IOException{
+	public void createChartCollision (String path) throws IOException{
 	
 		JFreeChart jChart = ChartFactory.createXYLineChart(
 				"", chart.getAxisY(), chart.getAxisX(), 
@@ -37,6 +38,54 @@ public class LineChart {
         
         NumberAxis yAxis = (NumberAxis) xyPlot.getRangeAxis();
         yAxis.setAutoRangeIncludesZero(false);
+        
+        NumberAxis domain = (NumberAxis) xyPlot.getRangeAxis();
+        domain.setTickUnit(new NumberTickUnit(200));
+		
+        OutputStream image = new FileOutputStream(path);
+		ChartUtilities.writeChartAsPNG(image, jChart, 500, 500);
+		image.close();
+	}
+	
+	public void createChartEmpty (String path) throws IOException{
+		
+		JFreeChart jChart = ChartFactory.createXYLineChart(
+				"", chart.getAxisY(), chart.getAxisX(), 
+				createDataset(), PlotOrientation.VERTICAL, true, false, false);
+		
+		XYPlot xyPlot = (XYPlot) jChart.getPlot();
+		xyPlot.setDomainCrosshairVisible(true);
+		xyPlot.setRangeCrosshairVisible(true);
+        
+        NumberAxis yAxis = (NumberAxis) xyPlot.getRangeAxis();
+        yAxis.setAutoRangeIncludesZero(false);
+        NumberAxis xAxis = (NumberAxis) xyPlot.getDomainAxis();
+        xAxis.setAutoRangeIncludesZero(false);
+        
+        NumberAxis domain = (NumberAxis) xyPlot.getRangeAxis();
+        domain.setTickUnit(new NumberTickUnit(100));
+		
+        OutputStream image = new FileOutputStream(path);
+		ChartUtilities.writeChartAsPNG(image, jChart, 500, 500);
+		image.close();
+	}
+	
+	
+	public void createChartTotal (String path) throws IOException{
+		
+		JFreeChart jChart = ChartFactory.createXYLineChart(
+				"", chart.getAxisY(), chart.getAxisX(), 
+				createDataset(), PlotOrientation.VERTICAL, true, false, false);
+		
+		XYPlot xyPlot = (XYPlot) jChart.getPlot();
+		xyPlot.setDomainCrosshairVisible(true);
+		xyPlot.setRangeCrosshairVisible(true);
+        
+        NumberAxis yAxis = (NumberAxis) xyPlot.getRangeAxis();
+        yAxis.setAutoRangeIncludesZero(false);
+        
+        NumberAxis domain = (NumberAxis) xyPlot.getRangeAxis();
+        domain.setTickUnit(new NumberTickUnit(500));
 		
         OutputStream image = new FileOutputStream(path);
 		ChartUtilities.writeChartAsPNG(image, jChart, 500, 500);

@@ -101,7 +101,7 @@ public class Main {
 				
 				for(int j=1; j<1001; j++){
 					if(chartType == 0) {
-//						estimator = new EomLee();
+						estimator = new EomLee();
 					} else if(chartType == 1) {
 						estimator = new LowerBound();
 					} else if(chartType == 2) {
@@ -135,7 +135,7 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException{
 		// Criar .CSVs:
-//		printCSV("EomLee.csv", 0);
+		printCSV("EomLee.csv", 0);
 		printCSV("LowerBound.csv", 1);
 		printCSV("Chen.csv", 2);
 		
@@ -148,13 +148,13 @@ public class Main {
 		String fileExtension = ".png";
 		
 		LineChart chartCollision = new LineChart(new Chart(slotsColisaoFile, "Número de etiquetas", "Número de colisões", collisionChartData));
-		chartCollision.create(filesDir.concat(slotsColisaoFile.concat(fileExtension)));
+		chartCollision.createChartCollision(filesDir.concat(slotsColisaoFile.concat(fileExtension)));
 		
 		LineChart chartEmpty = new LineChart(new Chart(slotsVaziosFile, "Número de etiquetas", "Número de slots vazios", emptyChartData));
-		chartEmpty.create(filesDir.concat(slotsVaziosFile.concat(fileExtension)));
+		chartEmpty.createChartEmpty(filesDir.concat(slotsVaziosFile.concat(fileExtension)));
 		
 		LineChart chartTotalSlots = new LineChart(new Chart(totalSlotsFile, "Número de etiquetas", "Número de slots", slotsChartData));
-		chartTotalSlots.create(filesDir.concat(totalSlotsFile.concat(fileExtension)));
+		chartTotalSlots.createChartTotal(filesDir.concat(totalSlotsFile.concat(fileExtension)));
 
 		// Gerar HTML:
 		gerarHTML(fileExtension, slotsColisaoFile, slotsVaziosFile, totalSlotsFile);
