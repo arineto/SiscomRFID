@@ -15,7 +15,7 @@ public class TagLoader {
 		String tagID;
 		
 		for(int i=1; i<=tagNum; i++){
-			fileName = tagNum + "/" + i;
+			fileName = "tags/" + tagNum + "/" + i;
 			tagID = this.readFile(fileName);
 			tags[i-1] = new Tag(tagID);
 		}
