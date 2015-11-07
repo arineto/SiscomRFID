@@ -12,33 +12,27 @@ public class EomLee implements Estimator{
 	double beta_ = 0;
 	double ebeta = 0;
 
-	public int estimate(int lastFrameSize, int successSlots, int collisionSlots){
+	public int estimate(int success, int empty, int collision){
+		
+		int lastFrameSize = success + empty + collision;
 		
 		if(lastFrameSize == 0){
-			return 1;
+			return 64;
 		}else{
 			do{
 
-				beta = (double) lastFrameSize / ( (last_gama * collisionSlots) + successSlots );
+				last_gama = gama;
+				
+				beta = (double) lastFrameSize / ( (last_gama * collision) + success );
 				beta_ = (double) 1 / beta;
 				ebeta = 1 / Math.pow(Math.E, beta_);
 				gama = (double) (1 - ebeta) / (beta * (1 - ((1 + beta_)*ebeta)) );
 				
-				last_beta = beta;
-				last_gama = gama;
+
 				
 			}while( Math.abs(last_gama - gama) >= threshold );
 
-			return (int) gama * collisionSlots;
+			return (int) gama * collision;
 		}
-	}
-	
-	public int estimateTags(int lastFrameSize, int successSlots, int collisionSlots){
-		
-		if(lastFrameSize == 1){
-			return 1;
-		}
-		
-		return (int) (lastFrameSize / beta);
 	}
 }
