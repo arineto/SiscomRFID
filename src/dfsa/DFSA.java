@@ -42,9 +42,9 @@ public class DFSA {
 		
 		while(!this.isFinished()){
 
-			int collisionSlots = 0;
-			int emptySlots = 0;
 			int successSlots = 0;
+			int emptySlots = 0;
+			int collisionSlots = 0;			
 			
 			slotsNum = estimator.estimate(lastSuccesSlots, lastEmptySlots, lastCollisionSlots);
 			

@@ -17,9 +17,9 @@ public class Main {
 	public static int empty;
 	public static int slots;
 	
-	public static int [][] collisionChartData = new int [10][2];
-	public static int [][] emptyChartData = new int [10][2];
-	public static int [][] slotsChartData = new int [10][2];
+	public static int [][] collisionChartData = new int [10][3];
+	public static int [][] emptyChartData = new int [10][3];
+	public static int [][] slotsChartData = new int [10][3];
 	
 	public static int tagsNum;
 	
@@ -101,9 +101,11 @@ public class Main {
 				
 				for(int j=1; j<1001; j++){
 					if(chartType == 0) {
-						estimator = new EomLee();
-					} else {
+//						estimator = new EomLee();
+					} else if(chartType == 1) {
 						estimator = new LowerBound();
+					} else if(chartType == 2) {
+						estimator = new Chen();
 					}
 					
 					algorithm = new DFSA(estimator, tagsNum);
@@ -118,6 +120,8 @@ public class Main {
 				emptyChartData[i][chartType] = empty/1000;
 				slotsChartData[i][chartType] = slots/1000;
 				
+//				System.out.printf("tagsNum = %d | Colisao: %d\n", tagsNum, collision/1000);
+				
 				writer.println(tagsNum+","+collision/1000+","+empty/1000+","+","+slots/1000);		
 			}
 		} catch (FileNotFoundException e) {
@@ -131,8 +135,9 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException{
 		// Criar .CSVs:
-		printCSV("EomLee.csv", 0);
+//		printCSV("EomLee.csv", 0);
 		printCSV("LowerBound.csv", 1);
+		printCSV("Chen.csv", 2);
 		
 		// Gerar gráficos:
 		String slotsColisaoFile = "slots-colisao";

@@ -4,8 +4,8 @@ public class SimpleMain {
 	
 	public static void main(String[] args){
 		
-		int tagsNum = 500;
-		Estimator estimator = new LowerBound();
+		int tagsNum = 1000;
+		Estimator estimator = new Chen();
 		
 		DFSA algorithm = new DFSA(estimator, tagsNum);
 		algorithm.run();
