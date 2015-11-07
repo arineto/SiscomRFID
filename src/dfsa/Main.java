@@ -15,16 +15,11 @@ public class Main {
 	public static int[] tagsM = {1,2,3,4,5,6,7,8,9,10};
 	public static int collision;
 	public static int empty;
-	public static long time;
-	public static int frames;
 	public static int slots;
-	public static int tags;
 	
 	public static int [][] collisionChartData = new int [10][2];
 	public static int [][] emptyChartData = new int [10][2];
 	public static int [][] slotsChartData = new int [10][2];
-	public static float [][] timeChartData = new float [10][2];
-	public static int [][] estimationErrorTagsChartData = new int [10][2];
 	
 	public static int tagsNum;
 	
@@ -62,8 +57,7 @@ public class Main {
 	}
 	
 	public static void gerarHTML(String fileExtension, 
-			String slotsColisao, String slotsVazios, String totalSlots, 
-			String tempoIdentificacao, String erroMedio) {
+			String slotsColisao, String slotsVazios, String totalSlots) {
 		String html = "<html>\n"
 				+ "<head>\n"
 				+ "<title>DFSA</title>\n"
@@ -101,10 +95,7 @@ public class Main {
 			for(int i=0; i<tagsM.length; i++) {				
 				collision = 0;
 				empty = 0;
-				time = 0;
-				frames = 0;
 				slots = 0;
-				tags = 0;
 				
 				tagsNum = 100*tagsM[i];
 				
@@ -118,27 +109,16 @@ public class Main {
 					algorithm = new DFSA(estimator, tagsNum);
 					algorithm.run();
 					
-					frames += algorithm.getTotalFrames();
 					collision += algorithm.getTotalCollisionSlots();
 					empty += algorithm.getTotalEmptySlots();
-					time += algorithm.getTotalTime();
 					slots += algorithm.getTotalSlots();
-					tags += algorithm.getEstimationError();
 				}
 				
 				collisionChartData[i][chartType] = collision/1000;
 				emptyChartData[i][chartType] = empty/1000;
 				slotsChartData[i][chartType] = slots/1000;
-				timeChartData[i][chartType] = (float)time/1000;
-				estimationErrorTagsChartData[i][chartType] = tags/1000;
 				
-				writer.println(tagsNum+","+frames/1000+","+collision/1000+","+empty/1000+","+(float) time/1000+","+slots/1000);
-//				System.out.println("Resultados para "+tagsNum+" tags:");
-//				System.out.println("Total de frames usados: "+ frames/1000);
-//				System.out.println("Total de slots com colisao: " + collision/1000);
-//				System.out.println("Total de slots vazios: " + empty/1000);
-//				System.out.println("Tempo total gasto para a execucao: " + (float) time/1000 + " milisegundos");
-//				System.out.println("============================================================================");				
+				writer.println(tagsNum+","+collision/1000+","+empty/1000+","+","+slots/1000);		
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -158,8 +138,6 @@ public class Main {
 		String slotsColisaoFile = "slots-colisao";
 		String slotsVaziosFile = "slots-vazios";
 		String totalSlotsFile = "total-slots";
-		String tempoIdentificacaoFile = "tempo-identificacao";
-		String erroMedioFile = "erro-medio";
 		
 		String filesDir = "index/dfsa/";
 		String fileExtension = ".png";
@@ -172,15 +150,9 @@ public class Main {
 		
 		LineChart chartTotalSlots = new LineChart(new Chart(totalSlotsFile, "Número de etiquetas", "Número de slots", slotsChartData));
 		chartTotalSlots.create(filesDir.concat(totalSlotsFile.concat(fileExtension)));
-		
-		LineChart chartTime = new LineChart(new Chart(tempoIdentificacaoFile, "Número de etiquetas", "Tempo para identificação (ms)", timeChartData));
-		chartTime.create(filesDir.concat(tempoIdentificacaoFile.concat(fileExtension)));
-		
-		LineChart chartError = new LineChart(new Chart(erroMedioFile, "Número de etiquetas", "Erro abs. médio de estimação", estimationErrorTagsChartData));
-		chartError.create(filesDir.concat(erroMedioFile.concat(fileExtension)));
 
 		// Gerar HTML:
-		gerarHTML(fileExtension, slotsColisaoFile, slotsVaziosFile, totalSlotsFile, tempoIdentificacaoFile, erroMedioFile);
+		gerarHTML(fileExtension, slotsColisaoFile, slotsVaziosFile, totalSlotsFile);
 		// Abrir navegador:
 		startBrowser(System.getProperty("user.dir").concat("/index/dfsa.html"));
 	}

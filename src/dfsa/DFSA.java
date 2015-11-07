@@ -2,28 +2,27 @@ package dfsa;
 
 public class DFSA {
 	
-	public Estimator estimator;
+	private Tag tags[];
 	public int tagNumber;
 	private boolean finished;
+	public Estimator estimator;	
+	
+	private int totalSlots;
+	private int totalSuccessSlots;
 	private int totalCollisionSlots;
 	private int totalEmptySlots;
-	private long totalTime;
-	private int totalFrames;
-	private int totalSlots;
-	private int estimationError;
-	private Tag tags[];
+	
 	
 	public DFSA(Estimator estimator, int tagNumber){
 		this.estimator = estimator;
 		this.tagNumber = tagNumber;
 		this.tags = new Tag[this.tagNumber];
 		this.finished = false;
+		
+		this.totalSlots = 0;
+		this.totalCollisionSlots = 0;
 		this.totalCollisionSlots = 0;
 		this.totalEmptySlots = 0;
-		this.totalTime = 0;
-		this.totalFrames = 0;
-		this.totalSlots = 0;
-		this.estimationError = 0;
 		
 		Tag tag;
 		for(int i=0; i<this.tagNumber; i++){
@@ -36,23 +35,20 @@ public class DFSA {
 		
 		int[] frame;
 		int slotsNum = 0;
-		int tagsNum = 0;
-		int lastFrameCollisionSlots = 0;
-		int lastFrameSuccessSlots = 0;
 		
-		long startTime = System.currentTimeMillis();
+		int lastSuccesSlots = 0;
+		int lastEmptySlots = 0;
+		int lastCollisionSlots = 0;
+		
 		while(!this.isFinished()){
-			
+
 			int collisionSlots = 0;
 			int emptySlots = 0;
 			int successSlots = 0;
 			
-			slotsNum = estimator.estimate(slotsNum, lastFrameSuccessSlots, lastFrameCollisionSlots);
-			tagsNum = estimator.estimateTags(slotsNum, lastFrameSuccessSlots, lastFrameCollisionSlots);
+			slotsNum = estimator.estimate(lastSuccesSlots, lastEmptySlots, lastCollisionSlots);
 			
 			frame = new int[slotsNum];
-			
-//			System.out.println("Iniciando fram com "+slotsNum+" slots");
 			
 			for(int i=0; i<this.tags.length; i++){
 				frame = tags[i].alive(frame);
@@ -60,43 +56,30 @@ public class DFSA {
 			
 			for(int i=0; i<frame.length; i++){
 				if(frame[i] == -1){
-					// A collision happened
 					collisionSlots += 1;
 				}
 				else if(frame[i] == 0){
-					// An empty slot happened
 					emptySlots += 1;
 				}
 				else{
-					// A tag was identified
 					successSlots += 1;
 					this.muteTag(frame[i]);
-//					System.out.println("Tag com ID="+frame[i]+" identificada");
 				}
 			}
 			
-			lastFrameCollisionSlots = collisionSlots;
-			lastFrameSuccessSlots = successSlots;
+			lastSuccesSlots = successSlots;
+			lastEmptySlots = emptySlots;
+			lastCollisionSlots = collisionSlots;
 			
 			this.updateCollisionSlots(collisionSlots);
 			this.updateEmptySlots(emptySlots);
-			this.updateTotalFrames();
 			this.updateTotalSlots(slotsNum);
-			this.updateEstimationError(Math.abs((tagNumber-countMuted())-tagsNum));
+			this.updateTotalSuccessSlots(successSlots);
 			
 			if( (collisionSlots == 0) && (successSlots == 0) ){
 				this.finish();
 			}
-			
-//			System.out.println("Frame finalizado");
-//			System.out.println("========================================================================================");
-
 		}
-		
-		long endTime   = System.currentTimeMillis();
-		long totalTime = endTime - startTime;
-		this.updateTotalTime(totalTime);
-		
 	}
 	
 	//Adicionado && !this.tags[i].isMuted() so para se tiver tags com a mesma ID ele procurar a que nao foi silenciada
@@ -107,17 +90,6 @@ public class DFSA {
 				break;
 			}
 		}
-	}
-	
-	public int countMuted(){
-		
-		int muted = 0;
-		for(int i=0; i<tags.length; i++){
-			if(this.tags[i].isMuted()){
-				muted++;
-			}
-		}
-		return muted;
 	}
 	
 	private boolean isFinished(){
@@ -144,22 +116,6 @@ public class DFSA {
 		return this.totalEmptySlots;
 	}
 	
-	private void updateTotalTime(long time){
-		this.totalTime = time;
-	}
-	
-	public long getTotalTime(){
-		return this.totalTime;
-	}
-	
-	public void updateTotalFrames(){
-		this.totalFrames += 1;
-	}
-	
-	public int getTotalFrames(){
-		return this.totalFrames;
-	}
-	
 	public void updateTotalSlots(int slots){
 		this.totalSlots += slots;
 	}
@@ -168,11 +124,11 @@ public class DFSA {
 		return this.totalSlots;
 	}
 	
-	public void updateEstimationError(int error){
-		this.estimationError += error;
+	public void updateTotalSuccessSlots(int successSlots){
+		this.totalSuccessSlots += successSlots;
 	}
 	
-	public int getEstimationError(){
-		return this.estimationError;
+	public int getTotalSuccessSlots(){
+		return this.totalSuccessSlots;
 	}
 }
