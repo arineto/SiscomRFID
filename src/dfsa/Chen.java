@@ -29,38 +29,30 @@ public class Chen implements Estimator {
 	}
 	
 	@Override
-	public int estimate(int lastFrameSize, int successSlots, int colisionSlots, int e) {
+	public int estimate(int success, int empty, int collision) {
 		// TODO Auto-generated method stub
-		if(lastFrameSize == 0) {
+		int frameSize = success + empty + collision;
+		if(frameSize == 0) {
 			return 64;
 		}
-//		int e = lastFrameSize-successSlots-colisionSlots;
-		lastFrameSize = e + successSlots + colisionSlots;
-		int n = successSlots + 2*colisionSlots;
+		int n = success + 2*collision;
 		double next = 0;
 		double previous = -1;
 		
 		double pe, ps, pc;
 		
 		while(previous < next) {
-			pe = Math.pow(1-(1/lastFrameSize), n);
-			ps =(n/lastFrameSize)*Math.pow(1-(1/lastFrameSize), n-1);
+			pe = Math.pow(1-(1/frameSize), n);
+			ps =(n/frameSize)*Math.pow(1-(1/frameSize), n-1);
 			pc = 1 - pe - ps;
 			
 			previous = next;
 			
-			next = fatorial(lastFrameSize, e, successSlots, colisionSlots)*Math.pow(pe, e)*Math.pow(ps, successSlots)*Math.pow(pc, colisionSlots);
+			next = fatorial(frameSize, empty, success, collision)*Math.pow(pe, empty)*Math.pow(ps, success)*Math.pow(pc, collision);
 			n++;
 		}
 		
 		return n-2;
 		
 	}
-
-	@Override
-	public int estimateTags(int lasFrameSize, int successSlots, int colisionSlots) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }
