@@ -4,12 +4,16 @@ import java.util.Stack;
 
 public class QwT implements TreeAlgorithm{
 
-	int totalBits = 0;
+	int totalBitsTag = 0;
+	int totalBitsReader = 0;
 	int totalIterations = 0;
+	int tagsNum = 0;
 	String tagID = "";
 	
 		
 	public void run(Tag[] tags){
+		
+		this.tagsNum = tags.length;
 		
 		String prefix;
 		String lastPrefix = "";
@@ -38,7 +42,8 @@ public class QwT implements TreeAlgorithm{
 			lastPrefix = prefix;
 			
 			totalIterations += 1;
-			totalBits += prefix.length() + (answers * windowSize);
+			totalBitsReader += prefix.length();
+			totalBitsTag += answers * windowSize;
 		}
 		
 	}
@@ -76,8 +81,12 @@ public class QwT implements TreeAlgorithm{
 		return window;
 	}
 	
-	public int getTotalBits(){
-		return this.totalBits;
+	public int getTotalBitsTag(){
+		return this.totalBitsTag/tagsNum;
+	}
+	
+	public int getTotalBitsReader(){
+		return this.totalBitsReader;
 	}
 	
 	public int getTotalIterations(){

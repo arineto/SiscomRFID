@@ -5,11 +5,14 @@ import java.util.Queue;
 
 public class QT implements TreeAlgorithm{
 	
-	int totalBits = 0;
+	int tagsNum = 0;
+	int totalBitsTag = 0;
+	int totalBitsReader = 0;
 	int totalIterations = 0;
-	
 		
 	public void run(Tag[] tags){
+		
+		this.tagsNum = tags.length;
 		
 		String prefix;
 		Queue<String> prefixes = new LinkedList<String>();
@@ -29,8 +32,8 @@ public class QT implements TreeAlgorithm{
 			}
 			
 			totalIterations += 1;
-			totalBits += prefix.length() + (answers * 96);
-			
+			totalBitsReader += prefix.length();
+			totalBitsTag += answers * 96;	
 		}
 		
 	}
@@ -47,8 +50,12 @@ public class QT implements TreeAlgorithm{
 		return answers;
 	}
 	
-	public int getTotalBits(){
-		return this.totalBits;
+	public int getTotalBitsTag(){
+		return this.totalBitsTag/this.tagsNum;
+	}
+	
+	public int getTotalBitsReader(){
+		return this.totalBitsReader;
 	}
 	
 	public int getTotalIterations(){

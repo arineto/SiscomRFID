@@ -20,13 +20,12 @@ public class LineChartTree {
 	private Chart chart;
 
 	public LineChartTree (Chart chart){
-
 		this.chart = chart;
 	}
 
 	public void create () throws IOException{
 
-		JFreeChart jChart = ChartFactory.createXYLineChart("", chart.getAxisY(), chart.getAxisX(), createDataset(), PlotOrientation.HORIZONTAL, true, false, false);
+		JFreeChart jChart = ChartFactory.createXYLineChart("", chart.getAxisY(), chart.getAxisX(), createDataset(), PlotOrientation.VERTICAL, true, false, false);
 
 		XYPlot xyPlot = (XYPlot) jChart.getPlot();
 		xyPlot.setDomainCrosshairVisible(true);
@@ -35,7 +34,7 @@ public class LineChartTree {
 		NumberAxis yAxis = (NumberAxis) xyPlot.getRangeAxis();
 		yAxis.setAutoRangeIncludesZero(false);
 
-		OutputStream image = new FileOutputStream(chart.getTitle() + ".png");
+		OutputStream image = new FileOutputStream("index/tree/" + chart.getTitle() + ".png");
 		ChartUtilities.writeChartAsPNG(image, jChart, 500, 500);
 		image.close();
 	}
@@ -49,8 +48,8 @@ public class LineChartTree {
 		int n = 100;
 
 		for(int i = 0; i<chart.getData().length; i++){
-			serie1.add(chart.getData()[i][0], n);
-			serie2.add(chart.getData()[i][1], n);
+			serie1.add(n, chart.getData()[i][0]);
+			serie2.add(n, chart.getData()[i][1]);
 			n += 100;
 		}
 
