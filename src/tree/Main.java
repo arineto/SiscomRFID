@@ -158,7 +158,7 @@ public class Main {
 			// Gerar HTML:
 			gerarHTML(fileExtension, iterationsFile, bitsTagFile, bitsReaderFile);
 			// Abrir navegador:
-			startBrowser(System.getProperty("user.dir").concat("/index/tree.html"));
+//			startBrowser(System.getProperty("user.dir").concat("/index/tree.html"));
 
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

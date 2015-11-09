@@ -11,7 +11,7 @@ def main():
 
     for num in tagsNum:
 
-        directory = '%d' % num
+        directory = 'tags/%d' % num
         if not os.path.exists(directory):
             os.makedirs(directory)
 
@@ -21,8 +21,8 @@ def main():
             f = open(file_name, 'w')
 
             tag_id = generate_id()
-            while(len(tag_id) != 96):
-                tag_id = generate_id()
+            if len(tag_id) < 96:
+                tag_id = tag_id.rjust(96, '0')
 
             f.write(tag_id)
             f.close()

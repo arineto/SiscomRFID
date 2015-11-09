@@ -40,9 +40,11 @@ public class QT implements TreeAlgorithm{
 	
 	public int queryTags(Tag[] tags, String prefix){
 		int answers = 0;
+		String tag_answer = null;
 		
 		for(Tag tag : tags){
-			if(tag.matchPrefix(prefix, 96) != null){
+			tag_answer = tag.matchPrefix(prefix, 96);
+			if(tag_answer != null){
 				answers += 1;
 			}
 		}

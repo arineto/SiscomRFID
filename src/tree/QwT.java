@@ -28,6 +28,7 @@ public class QwT implements TreeAlgorithm{
 			
 			prefix = prefixes.pop();
 			windowSize = calculateWindow(answers, prefix, lastPrefix, windowSize);
+//			System.out.println(prefix);
 			answers = queryTags(tags, prefix, windowSize);
 			
 			if(answers == 1){
@@ -44,16 +45,19 @@ public class QwT implements TreeAlgorithm{
 			totalIterations += 1;
 			totalBitsReader += prefix.length();
 			totalBitsTag += answers * windowSize;
+//			System.out.printf("respostas: %d window: %d total: %d\n", answers, windowSize, answers*windowSize);
 		}
 		
 	}
 	
 	public int queryTags(Tag[] tags, String prefix, int windowSize){
 		int answers = 0;
+		String tag_answer = null;
 		
 		for(Tag tag : tags){
-			tagID = tag.matchPrefix(prefix, windowSize);
-			if(tagID != null){
+			tag_answer = tag.matchPrefix(prefix, windowSize);
+			if(tag_answer != null){
+				this.tagID = tag_answer;
 				answers += 1;
 			}
 		}
@@ -67,7 +71,7 @@ public class QwT implements TreeAlgorithm{
 		if((answers == 1) && (lastPrefix.length() < prefix.length())){
 			double k = prefix.length();
 			double ebeta = Math.pow(Math.E, (0.5*k));
-			window = (int) (k*(1 - (1 / ebeta)));
+			window = (int) Math.ceil((k*(1.0 - (1.0 / ebeta))));
 		}else if((answers != 1) && (lastPrefix.length() < prefix.length())){
 			window = lastWindow;
 		}else if((answers >= 0) && (lastPrefix.length() >= prefix.length())){
