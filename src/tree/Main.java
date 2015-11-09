@@ -73,13 +73,13 @@ public class Main {
 				+ "<h1>QT e QwT</h1>\n"
 				+ "<h2>Bits transmitidos Leitor->Tag</h2>\n"
 				+ "<img src=\"tree/"+bitsReader.concat(fileExtension)+"\" />\n"
-				+ "<img src=\"tree/artigo/"+bitsReader.concat(fileExtension)+"\" />\n"
+				+ "<img src=\"tree/artigo/"+bitsReader.concat(fileExtension)+"\" height=\"500\"/>\n"
 				+ "<h2>Bits Transmitidos Tag->Leitor</h2>"
 				+ "<img src=\"tree/"+bitsTag.concat(fileExtension)+"\" />\n"
-				+ "<img src=\"tree/artigo/"+bitsTag.concat(fileExtension)+"\" />\n"
+				+ "<img src=\"tree/artigo/"+bitsTag.concat(fileExtension)+"\"  height=\"500\"/>\n"
 				+ "<h2>Número de passos</h2>\n"
 				+ "<img src=\"tree/"+iterations.concat(fileExtension)+"\" />\n"
-				+ "<img src=\"tree/artigo/"+iterations.concat(fileExtension)+"\" />\n"
+				+ "<img src=\"tree/artigo/"+iterations.concat(fileExtension)+"\"  height=\"500\"/>\n"
 				+ "</body>\n"
 				+ "</html>\n";
 
@@ -142,8 +142,8 @@ public class Main {
 			
 			// Gerar gr�ficos:
 			String iterationsFile = "iteracoes";
-			String bitsReaderFile = "bits-tag-leitor";
-			String bitsTagFile = "bits-leitor-tag";
+			String bitsReaderFile = "bits-leitor-tag";
+			String bitsTagFile = "bits-tag-leitor";
 			
 			String filesDir = "index/tree/";
 			String fileExtension = ".png";
