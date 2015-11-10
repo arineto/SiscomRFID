@@ -1,5 +1,10 @@
 package util;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Util {
 
 	public static void startBrowser(String url) {		
@@ -31,5 +36,31 @@ public class Util {
 			System.out.println("nooope!");
 			return;
 		}
-	}	
+	}
+	
+	public static void criarTags(int qtdTags) {
+		StringBuilder builder = null;
+		List<String> l = null;
+		BigInteger a = null;
+		String tag = null;
+		
+		for(int i = 0; i < 1000; i++) {
+			builder = new StringBuilder();
+			l = new ArrayList<String>();
+			
+			for(int j = 0; j < qtdTags; j++) {
+				a = new BigInteger(120, new Random());
+				
+				if(!l.contains(a)) {
+					tag = a.toString(2).substring(0, 96);
+					l.add(tag);
+					builder.append(tag.concat("\r\n"));
+				}
+			}
+		}
+	}
+
+//	public static void main(String[] args) {
+//		criarTags(1000);
+//	}
 }
