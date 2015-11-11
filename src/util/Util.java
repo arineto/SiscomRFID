@@ -88,7 +88,7 @@ public class Util {
 		ByteBuffer byteBuffer = null;
 		
 		try {
-			for(int i = 1; i <= 1000; i++) {
+			for(int i = 1; i <= 500; i++) {
 				buffer = criarTags(qtdTags).toString().getBytes();
 				
 				raf = new RandomAccessFile("tags/"+qtdTags+"/"+i+".txt", "rw");
