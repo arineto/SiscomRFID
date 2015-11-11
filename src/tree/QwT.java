@@ -43,7 +43,7 @@ public class QwT implements TreeAlgorithm{
 			lastPrefix = prefix;
 			
 			totalIterations += 1;
-			totalBitsReader += prefix.length();
+			totalBitsReader += prefix.length() + Integer.toString(windowSize).length();
 			totalBitsTag += answers * windowSize;
 //			System.out.printf("respostas: %d window: %d total: %d\n", answers, windowSize, answers*windowSize);
 		}
