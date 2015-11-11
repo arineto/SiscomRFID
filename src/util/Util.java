@@ -1,6 +1,11 @@
 package util;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -38,29 +43,84 @@ public class Util {
 		}
 	}
 	
-	public static void criarTags(int qtdTags) {
+	/**
+	 * Cria um numero X de tags (96 bits) aleatorias, sem repeticao, 
+	 * de acordo com o valor passado como parametro.
+	 * 
+	 * @param qtdTags
+	 * 			Quantidadade de tags que devem ser geradas.
+	 * @return Buffer com todas as tags, uma por linha.
+	 */
+	private static StringBuilder criarTags(int qtdTags) {
 		StringBuilder builder = null;
 		List<String> l = null;
 		BigInteger a = null;
 		String tag = null;
 		
-		for(int i = 0; i < 1000; i++) {
-			builder = new StringBuilder();
-			l = new ArrayList<String>();
+		builder = new StringBuilder();
+		l = new ArrayList<String>();
+		
+		for(int j = 0; j < qtdTags; j++) {
+			a = new BigInteger(120, new Random());
 			
-			for(int j = 0; j < qtdTags; j++) {
-				a = new BigInteger(120, new Random());
-				
-				if(!l.contains(a)) {
-					tag = a.toString(2).substring(0, 96);
-					l.add(tag);
-					builder.append(tag.concat("\r\n"));
-				}
+			if(!l.contains(a)) {
+				tag = a.toString(2).substring(0, 96);
+				l.add(tag);
+				builder.append(tag.concat("\r\n"));
 			}
 		}
+		
+		return builder;
+	}
+	
+	/**
+	 * Gera 1000 arquivos, numerados de 1 a 1000, 
+	 * com o numero de tags passado como parametro, 
+	 * salvando-os em seus respectivos diretorios.
+	 * 
+	 * @param qtdTags
+	 * 			Numero de tags em cada arquivo criado.
+	 */
+	private static void salvarArquivos(int qtdTags) {
+		byte[] buffer = null;
+		RandomAccessFile raf = null;
+		FileChannel channel = null;
+		ByteBuffer byteBuffer = null;
+		
+		try {
+			for(int i = 1; i <= 1000; i++) {
+				buffer = criarTags(qtdTags).toString().getBytes();
+				
+				raf = new RandomAccessFile("tags/"+qtdTags+"/"+i+".txt", "rw");
+				channel = raf.getChannel();
+				byteBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, buffer.length);
+				
+				byteBuffer.put(buffer);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(channel != null) {
+					channel.close();
+				}				
+				if (raf != null) {
+					raf.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}		
 	}
 
-//	public static void main(String[] args) {
-//		criarTags(1000);
-//	}
+	/**
+	 * Gera todos os arquivos para os testes.
+	 */
+	public static void gerarArquivosTags() {
+		for(int qtdTags = 100; qtdTags <= 1000; qtdTags+=100) {
+			salvarArquivos(qtdTags);
+		}
+	}
 }
