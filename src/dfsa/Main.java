@@ -35,15 +35,18 @@ public class Main {
 				+ "</head>\n"
 				+ "<body bgcolor=\"#EEEEEE\">\n"
 				+ "<h1>DFSA</h1>\n"
-				+ "<h2>Slots com colisão</h2>\n"
-				+ "<img src=\"dfsa/"+slotsColisao.concat(fileExtension)+"\" />\n"
-				+ "<img src=\"dfsa/artigo/"+slotsColisao.concat(fileExtension)+"\" />\n"
+				+ "<h2>Slots com colisao</h2>\n"
+				+ "<img src=\"dfsa/"+slotsColisao.concat(fileExtension)+"\" height=\"400\" />\n"
+				+ "<img src=\"dfsa/artigo/"+slotsColisao.concat(fileExtension)+"\" height=\"400\" />\n"
+				+ "<img src=\"dfsa/artigo/colisoes-chen.jpg\" height=\"400\" />\n"
 				+ "<h2>Slots vazios</h2>"
-				+ "<img src=\"dfsa/"+slotsVazios.concat(fileExtension)+"\" />\n"
-				+ "<img src=\"dfsa/artigo/"+slotsVazios.concat(fileExtension)+"\" />\n"
+				+ "<img src=\"dfsa/"+slotsVazios.concat(fileExtension)+"\" height=\"400\" />\n"
+				+ "<img src=\"dfsa/artigo/"+slotsVazios.concat(fileExtension)+"\" height=\"400\" />\n"
+				+ "<img src=\"dfsa/artigo/vazios-chen.jpg\" height=\"400\" />\n"
 				+ "<h2>Total de slots</h2>\n"
-				+ "<img src=\"dfsa/"+totalSlots.concat(fileExtension)+"\" />\n"
-				+ "<img src=\"dfsa/artigo/"+totalSlots.concat(fileExtension)+"\" />\n"
+				+ "<img src=\"dfsa/"+totalSlots.concat(fileExtension)+"\" height=\"400\" />\n"
+				+ "<img src=\"dfsa/artigo/"+totalSlots.concat(fileExtension)+"\" height=\"400\" />\n"
+				+ "<img src=\"dfsa/artigo/totalslots-chen.jpg\" height=\"400\" />\n"
 				+ "</body>\n"
 				+ "</html>\n";
 		
@@ -62,22 +65,24 @@ public class Main {
 			writer = new PrintWriter(csvFileName, "UTF-8");
 			writer.println("Tags,Frames,Colisões,Vazios,Tempo,Slots");
 		
-			for(int i=0; i<tagsM.length; i++) {				
+			for(int i=0; i<tagsM.length; i++) {
+				if(chartType == 0) {
+					estimator = new EomLee();
+				} else if(chartType == 1) {
+					estimator = new LowerBound();
+				} else if(chartType == 2) {
+					estimator = new Chen();
+				}
+				
 				collision = 0;
 				empty = 0;
 				slots = 0;
 				
 				tagsNum = 100*tagsM[i];
+
+				System.out.printf("Simulando %d tags... ", tagsNum);
 				
 				for(int j=1; j<1001; j++){
-					if(chartType == 0) {
-						estimator = new EomLee();
-					} else if(chartType == 1) {
-						estimator = new LowerBound();
-					} else if(chartType == 2) {
-						estimator = new Chen();
-					}
-					
 					algorithm = new DFSA(estimator, tagsNum);
 					algorithm.run();
 					
@@ -90,10 +95,12 @@ public class Main {
 				emptyChartData[i][chartType] = empty/1000;
 				slotsChartData[i][chartType] = slots/1000;
 				
-//				System.out.printf("tagsNum = %d | Colisao: %d\n", tagsNum, collision/1000);
+				writer.println(tagsNum+","+collision/1000+","+empty/1000+","+","+slots/1000);
 				
-				writer.println(tagsNum+","+collision/1000+","+empty/1000+","+","+slots/1000);		
+				System.out.println("OK!");
 			}
+			
+			System.out.println("Fim das simulações!");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
