@@ -4,7 +4,7 @@ public class SimpleMain {
 	public static void main(String[] args){
 		TagLoader loader = new TagLoader();
 		
-		Tag[] tags = loader.load(1000);
+		Tag[] tags = loader.load(1000, 1);
 		TreeAlgorithm tree = new QT();
 //		TreeAlgorithm tree = new QwT();
 		

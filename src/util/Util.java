@@ -123,4 +123,8 @@ public class Util {
 			salvarArquivos(qtdTags);
 		}
 	}
+	
+	public static void main(String[] args) {
+		gerarArquivosTags();
+	}
 }

@@ -23,7 +23,7 @@ public class Main {
 
 	public static int bitsTag;
 	public static int bitsReader;
-	public static int iterations;
+	public static int steps;
 
 	public static PrintWriter writer;
 
@@ -61,16 +61,20 @@ public class Main {
 		try {
 			writer = new PrintWriter(csvFileName, "UTF-8");
 			writer.println("Tags,Bits leitor->tag,Bits tag->leitor,iteracoes");
+			
+			int testIterations = 500;
 
 			for(int i=0; i<tagsM.length; i++){
-				iterations = 0;
+				steps = 0;
 				bitsTag = 0;
 				bitsReader = 0;
 				tagsNum = 100*tagsM[i];
 				
-				Tag[] tags = loader.load(tagsNum);
+				Tag[] tags;
 
-				for(int j=1; j<2; j++){
+				for(int j=1; j<=testIterations; j++){
+					tags = loader.load(tagsNum, j);
+					
 					if(chartType == 0) {
 						tree = new QT();
 					} else if(chartType == 1) {
@@ -78,16 +82,16 @@ public class Main {
 					}
 
 					tree.run(tags);
-					iterations += tree.getTotalIterations();
+					steps += tree.getTotalIterations();
 					bitsTag += tree.getTotalBitsTag();
 					bitsReader += tree.getTotalBitsReader();
 				}
 
-				stepsChartData[i][chartType] = iterations;
-				bitsTagChartData[i][chartType] = bitsTag;
-				bitsReaderChartData[i][chartType] = bitsReader;
+				stepsChartData[i][chartType] = steps/testIterations;
+				bitsTagChartData[i][chartType] = bitsTag/testIterations;
+				bitsReaderChartData[i][chartType] = bitsReader/testIterations;
 				
-				writer.println(tagsNum+","+bitsReader+","+bitsTag+","+","+iterations);	
+				writer.println(tagsNum+","+bitsReader/testIterations+","+bitsTag/testIterations+","+","+steps/testIterations);	
 			}
 			writer.close();
 
@@ -104,7 +108,7 @@ public class Main {
 			printCSV("QwT.csv", 1);
 			
 			// Gerar graficos:
-			String iterationsFile = "iteracoes";
+			String iterationsFile = "passos";
 			String bitsReaderFile = "bits-leitor-tag";
 			String bitsTagFile = "bits-tag-leitor";
 			
