@@ -69,7 +69,7 @@ public class QwT implements TreeAlgorithm{
 		int window = 1;
 		
 		if((answers == 1) && (lastPrefix.length() < prefix.length())){
-			double k = prefix.length();
+			double k = 96;
 			double ebeta = Math.pow(Math.E, (0.5*k));
 			window = (int) Math.ceil((k*(1.0 - (1.0 / ebeta))));
 		}else if((answers != 1) && (lastPrefix.length() < prefix.length())){
