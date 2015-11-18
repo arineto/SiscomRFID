@@ -14,5 +14,9 @@ hs_err_pid*
 
 Thumbs.db
 tags/*
+index/*
 
+*.png
 *.csv
+
+

@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import charts.Chart;
+import charts.LineChartTree;
 
 public class QT {
 	/**
@@ -12,13 +16,21 @@ public class QT {
 	 */
 	private int iteracoes;
 	/**
-	 * Quantidade de bits trocados em uma consulta.
+	 * Quantidade de bits trocados em uma consulta
+	 * na direcao leitor/tag.
 	 */
-	private int bitsTrocados;
+	private int bitsLeitorTag;
+	/**
+	 * Quantidade de bits trocados em uma consulta
+	 * na direcao tag/leitor.
+	 */
+	private int bitsTagLeitor;
 	/**
 	 * Lista de tags utilizadas em uma consulta.
 	 */
 	private final List<String> tags;
+	
+	private final int qtdTags;
 	
 	/**
 	 * Construtor.
@@ -26,8 +38,11 @@ public class QT {
 	 * 			Lista de tags.
 	 */
 	public QT(final List<String> tags) {
-		this.iteracoes = 0;
 		this.tags = tags;
+		this.qtdTags = tags.size();
+		this.iteracoes = 0;
+		this.bitsLeitorTag = 0;
+		this.bitsTagLeitor = 0;
 	}
 	
 	/**
@@ -61,7 +76,8 @@ public class QT {
 	 */
 	private void contar(List<String> matches, String prefixo) {
 		this.iteracoes++;
-		this.bitsTrocados += (matches.size()*96) + prefixo.length();
+		this.bitsLeitorTag += prefixo.length();
+		this.bitsTagLeitor += (matches.size()*128);
 	}
 	
 	/**
@@ -128,16 +144,27 @@ public class QT {
 	 * @return Numero de iteracoes de uma consulta.
 	 */
 	public int getIteracoes() {
-		return iteracoes;
+		return this.iteracoes;
 	}
 
+	/**
+	 * Quantidade de bits trocados em uma consulta
+	 * na direcao leitor/tag.
+	 * 
+	 * @return Quantidade de bits trocados em uma consulta
+	 * 		   na direcao leitor/tag.
+	 */
+	public int getBitsLeitorTag() {
+		return this.bitsLeitorTag;
+	}
+	
 	/**
 	 * Retorna a quantidade de bits trocados em uma consulta.
 	 * 
 	 * @return Quantidade de bits trocados em uma consulta.
 	 */
-	public int getBitsTrocados() {
-		return bitsTrocados;
+	public int getBitsTagLeitor() {
+		return this.bitsTagLeitor/qtdTags;
 	}
 
 	/**
@@ -162,16 +189,53 @@ public class QT {
 		List<String> tags = null;
 		List<String> resultados = new ArrayList<String>();
 		
+		long startTime = Calendar.getInstance().getTimeInMillis();
+		
+		int totalPassos, bitsLeitorTag, bitsTagLeitor;
+		
+		int[][] passosDados = new int[10][2];
+		int[][] bitsLeitorTagDados = new int[10][2];
+		int[][] bitsTagLeitorDados = new int[10][2];
+		
 		// Para cada caso de teste, faca:
-		for(int i = 100 ; i <= 1000; i+=100) {
-			// Carregar as tags na memoria:
-			tags = (new TagLoader()).load(i);
-			// Criar novo objeto:
-			qt = new QT(tags);
-			// Executar protocolo:
-			qt.run();
-			// Adicionar resultado da consulta a uma lista:
-			resultados.add(i + "," + qt.getIteracoes() + "," + qt.getBitsTrocados() + "\n");			
+		for(int i = 1 ; i*100 <= 1000; i++) {
+			totalPassos = 0;
+			bitsLeitorTag = 0;
+			bitsTagLeitor = 0;
+			
+			for(int j = 1; j <= 500; j++) {
+				// Carregar as tags na memoria:
+				tags = (new TagLoader()).load(i*100, j);
+				// Criar novo objeto:
+				qt = new QT(tags);
+				// Executar protocolo:
+				qt.run();
+//				// Adicionar resultado da consulta a uma lista:
+//				resultados.add(i + "," + qt.getIteracoes() + "," + qt.getBitsTrocados() + "\n");
+				totalPassos += qt.getIteracoes();
+				bitsLeitorTag += qt.getBitsLeitorTag();
+				bitsTagLeitor += qt.getBitsTagLeitor();
+			}
+			
+			passosDados[i-1][0] = totalPassos/500;
+			bitsLeitorTagDados[i-1][0] = bitsLeitorTag/500;
+			bitsTagLeitorDados[i-1][0] = bitsTagLeitor/500;
+			
+			System.out.println(i);
+		}
+		
+		System.out.println((Calendar.getInstance().getTimeInMillis() - startTime)/1000+"s");
+		
+		LineChartTree passosGrafico = new LineChartTree(new Chart("01-passos-qt", "Numero de passos", "Numero de etiquetas", passosDados));
+		LineChartTree bitsLeitorTagGrafico = new LineChartTree(new Chart("02-leitor-tag-qt", "Numero de bits trocados Leitor->Tag", "Numero de etiquetas", bitsLeitorTagDados));
+		LineChartTree bitsTagLeitorGrafico = new LineChartTree(new Chart("03-tag-leitor-qt", "Numero de bits trocados Tag->Leitor", "Numero de etiquetas", bitsTagLeitorDados));
+		
+		try {
+			passosGrafico.create();
+			bitsLeitorTagGrafico.create();
+			bitsTagLeitorGrafico.create();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
 		// Escrever em arquivo:
