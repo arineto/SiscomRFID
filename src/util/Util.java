@@ -36,11 +36,15 @@ public class Util {
 		        rt.exec(new String[] { "sh", "-c", cmd.toString() });
 
 	        } else {
-	        	System.out.println("nope!");
+	        	System.out.println("Erro ao abrir navegador!");
+	        	System.out.println("Äs imagens foram geradas na pasta ~/index/dfsa ou ~/index/tree, "
+	        			+ "para protocolos DFSA e baseados em Árvore, respectivamente.");
 	        	return;
 	        }
 		}catch (Exception e){
-			System.out.println("nooope!");
+			System.out.println("Erro ao abrir navegador!");
+        	System.out.println("Äs imagens foram geradas na pasta ~/index/dfsa ou ~/index/tree, "
+        			+ "para protocolos DFSA e baseados em Árvore, respectivamente.");
 			return;
 		}
 	}
