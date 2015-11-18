@@ -44,7 +44,7 @@ public class QwT implements TreeAlgorithm{
 			
 			totalIterations += 1;
 			totalBitsReader += prefix.length() + Integer.toString(windowSize).length();
-			totalBitsTag += answers * windowSize;
+			totalBitsTag += answers * (windowSize + 5);
 //			System.out.printf("respostas: %d window: %d total: %d\n", answers, windowSize, answers*windowSize);
 		}
 		

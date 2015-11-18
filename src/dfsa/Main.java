@@ -112,8 +112,11 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException{
 		// Criar .CSVs:
+		System.out.println("[EomLee]");
 		printCSV("EomLee.csv", 0);
+		System.out.println("[LowerBound]");
 		printCSV("LowerBound.csv", 1);
+		System.out.println("[Chen]");
 		printCSV("Chen.csv", 2);
 		
 		// Gerar gráficos:

@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Util {
+	
+	private static final int QTD_BITS = 96;
 
 	public static void startBrowser(String url) {		
 		String os = System.getProperty("os.name").toLowerCase();
@@ -61,10 +63,10 @@ public class Util {
 		l = new ArrayList<String>();
 		
 		for(int j = 0; j < qtdTags; j++) {
-			a = new BigInteger(120, new Random());
+			a = new BigInteger(140, new Random());
 			
 			if(!l.contains(a)) {
-				tag = a.toString(2).substring(0, 96);
+				tag = a.toString(2).substring(0, QTD_BITS);
 				l.add(tag);
 				builder.append(tag.concat("\r\n"));
 			}
@@ -120,8 +122,12 @@ public class Util {
 	 */
 	public static void gerarArquivosTags() {
 		for(int qtdTags = 100; qtdTags <= 1000; qtdTags+=100) {
+			System.out.printf("Criando arquivos com %d tags... ", qtdTags);
 			salvarArquivos(qtdTags);
+			System.out.println("OK!");
 		}
+		
+		System.out.println("Ärquivos criados!");
 	}
 	
 	public static void main(String[] args) {

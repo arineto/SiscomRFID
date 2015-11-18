@@ -37,13 +37,11 @@ public class Main {
 				+ "<h1>QT e QwT</h1>\n"
 				+ "<h2>Bits transmitidos Leitor->Tag</h2>\n"
 				+ "<img src=\"tree/"+bitsReader.concat(fileExtension)+"\" />\n"
-				+ "<img src=\"tree/artigo/"+bitsReader.concat(fileExtension)+"\" height=\"500\"/>\n"
 				+ "<h2>Bits Transmitidos Tag->Leitor</h2>"
 				+ "<img src=\"tree/"+bitsTag.concat(fileExtension)+"\" />\n"
 				+ "<img src=\"tree/artigo/"+bitsTag.concat(fileExtension)+"\"  height=\"500\"/>\n"
 				+ "<h2>NÃºmero de passos</h2>\n"
 				+ "<img src=\"tree/"+iterations.concat(fileExtension)+"\" />\n"
-				+ "<img src=\"tree/artigo/"+iterations.concat(fileExtension)+"\"  height=\"500\"/>\n"
 				+ "</body>\n"
 				+ "</html>\n";
 
@@ -62,6 +60,7 @@ public class Main {
 			writer = new PrintWriter(csvFileName, "UTF-8");
 			writer.println("Tags,Bits leitor->tag,Bits tag->leitor,iteracoes");
 			
+			Tag[] tags;
 			int testIterations = 500;
 
 			for(int i=0; i<tagsM.length; i++){
@@ -70,7 +69,7 @@ public class Main {
 				bitsReader = 0;
 				tagsNum = 100*tagsM[i];
 				
-				Tag[] tags;
+				System.out.printf("Simulando %d tags... ", tagsNum);
 
 				for(int j=1; j<=testIterations; j++){
 					tags = loader.load(tagsNum, j);
@@ -92,11 +91,15 @@ public class Main {
 				bitsReaderChartData[i][chartType] = bitsReader/testIterations;
 				
 				writer.println(tagsNum+","+bitsReader/testIterations+","+bitsTag/testIterations+","+","+steps/testIterations);	
+				
+				System.out.println("OK!");
 			}
-			writer.close();
-
+			
+			System.out.println("Fim das simulações!");
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			e.printStackTrace();
+		} finally {
+			writer.close();
 		}
 	}
 
@@ -104,7 +107,9 @@ public class Main {
 
 		try{
 			// Criar .CSVs:
+			System.out.println("[QT]");
 			printCSV("QT.csv", 0);
+			System.out.println("[QwT]");
 			printCSV("QwT.csv", 1);
 			
 			// Gerar graficos:
